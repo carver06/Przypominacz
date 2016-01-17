@@ -35,10 +35,10 @@ public class FilmwebApiHelper {
     }
 
     /**
-     * Lista osób danej profesji z danego filmu
+     * Lista osï¿½b danej profesji z danego filmu
      * @param filmId ID filmu
      * @param profession Nazwa profesji
-     * @return Lista osób
+     * @return Lista osï¿½b
      */
     @SuppressWarnings("unchecked")
 	public ArrayList<Person> getFilmPersons(int filmId, Profession profession) {
@@ -177,6 +177,7 @@ public class FilmwebApiHelper {
 					film.setDuration(filmEntry.isNull(4) ? null : Integer.valueOf(filmEntry.getInt(4)));
 					film.setCoverUrl(filmEntry.isNull(5) ? null : getURL(Config.URL_POSTER + filmEntry.getString(5)));
 					film.setId(id);
+					film.setFilmData();
 					CacheList.setFilm(film);
 				}
 				popularFilmList.add(film);
@@ -256,9 +257,9 @@ public class FilmwebApiHelper {
             String response = conn.getResponse();
             
             /*
-             * 0 - tytu³
-             * 1 - oryginalny tytu³
-             * 2 - œrednia ocen
+             * 0 - tytuï¿½
+             * 1 - oryginalny tytuï¿½
+             * 2 - ï¿½rednia ocen
              * 3 - liczba ocen
              * 4 - gatunki
              * 5 - rok
@@ -267,29 +268,29 @@ public class FilmwebApiHelper {
              * 8 - adres forum 
              * 9 - czy ma recenzje
              * 10 - czy ma opis
-             * 11 - œcie¿ka obrazka
+             * 11 - ï¿½cieï¿½ka obrazka
              * 12 - tablica video
-             * 13 - data premieri na œwiecie
+             * 13 - data premieri na ï¿½wiecie
              * 14 - data premiery w kraju
              * 15 - rodzaj filmu (0 - film, 1 - serial, 2 - gra)
-             * 16 - liczba sezonów
-             * 17 - liczba odcinków
-             * 18 - lista krajów
+             * 16 - liczba sezonï¿½w
+             * 17 - liczba odcinkï¿½w
+             * 18 - lista krajï¿½w
              * 19 - streszczenie
              */
             
             JSONArray entry = getJSONArray(response);
             
-            //tytu³ polski
+            //tytuï¿½ polski
             film.setPolishTitle(getString(entry, 0));
             
-            //tytu³ oryginalny
+            //tytuï¿½ oryginalny
             film.setTitle(entry.isNull(1) ? null : entry.optString(1, ""));
             
-            //œrednia ocena
+            //ï¿½rednia ocena
             film.setRate(entry.optDouble(2, 0.0d));            
 
-            //liczba g³osów
+            //liczba gï¿½osï¿½w
             film.setVotes(entry.optInt(3, 0));
            
             //gatunek
@@ -316,14 +317,14 @@ public class FilmwebApiHelper {
             // czy posiada opis
             film.setHasDescription(entry.optInt(10, 0) > 0);
           
-            // ok³adka
+            // okï¿½adka
             data = entry.isNull(11) ? null : entry.optString(11);
             if (data != null) {
                 String urlStr = Config.URL_POSTER + data;
                 film.setCoverUrl(getURL(urlStr));
             }
             
-            // data premiery na œwiecie
+            // data premiery na ï¿½wiecie
             film.setPremiereWorld(entry.isNull(13) ? null : getDateFromString(getString(entry, 13)));
             
             // data premiery w Polsce
@@ -338,14 +339,14 @@ public class FilmwebApiHelper {
             // streszczenie
             film.setSynopsis(entry.isNull(19) ? null : getString(entry, 19).trim());
 
-            //serial posiada kilka dodatkowych pól
+            //serial posiada kilka dodatkowych pï¿½l
             if (film.getFilmType() == 1) {
                 Series series = (Series)film;
 
-                //liczba sezonów
+                //liczba sezonï¿½w
                 series.setSeasonsCount(entry.optInt(16, 0));
                 
-                //liczba odcinków
+                //liczba odcinkï¿½w
                 series.setEpisodesCount(entry.optInt(17, 0));
                 CacheList.setFilm(series);
             } else {

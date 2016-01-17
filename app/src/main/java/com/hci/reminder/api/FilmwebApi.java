@@ -62,6 +62,10 @@ public class FilmwebApi {
     public ArrayList<Film> getPopularFilms() {
     	return ca.getPopularFilms();
     }
+
+    public ArrayList<Series> getPopularSeries() {
+        return ca.getPopularSeries();
+    }
     
     public ArrayList<Film> getUpcommingFilms() {
     	return ca.getUpcommingFilms();

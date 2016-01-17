@@ -283,9 +283,27 @@ public class ContentAnalyzer {
     public ArrayList<Film> getPopularFilms() {
     	Connection conn = new Connection();
         FilmwebApiHelper api = new FilmwebApiHelper(conn);
-        return api.getPopularFilms();
+        ArrayList<Film> popular = new ArrayList<Film>();
+        for(Film film : api.getPopularFilms()) {
+            if(film.getFilmType() == Type.FILM.getCode()) {
+                popular.add(film);
+            }
+        }
+        return popular;
     }
-    
+
+    public ArrayList<Series> getPopularSeries() {
+        Connection conn = new Connection();
+        FilmwebApiHelper api = new FilmwebApiHelper(conn);
+        ArrayList<Series> popular = new ArrayList<Series>();
+        for(Film film : api.getPopularFilms()) {
+            if(film.getFilmType() == Type.SERIES.getCode()) {
+                popular.add((Series)film);
+            }
+        }
+        return popular;
+    }
+
     public ArrayList<Film> getUpcommingFilms() {
     	Connection conn = new Connection();
         FilmwebApiHelper api = new FilmwebApiHelper(conn);
