@@ -18,21 +18,21 @@ public class FilmwebApi {
     }
     
     /**
-     * Lista filmów (+ podstawowe informacje) o danym tytule
-     * Pozycje posortowane wg trafnoœci (popularnoœæ)
-     * @param title Tytu³ filmu
-     * @return Lista filmów wraz z podstawowymi informacjami
+     * Lista filmï¿½w (+ podstawowe informacje) o danym tytule
+     * Pozycje posortowane wg trafnoï¿½ci (popularnoï¿½ï¿½)
+     * @param title Tytuï¿½ filmu
+     * @return Lista filmï¿½w wraz z podstawowymi informacjami
      */
     public ArrayList<Film> getFilmList(String title) {
         return ca.getFilmList(title);
     }
     
     /**
-     * Lista filmów (+ podstawowe informacje) o danym tytule i roku produkcji
-     * Pozycje posortowane wg trafnoœci (popularnoœæ)
-     * @param title Tytu³ filmu
+     * Lista filmï¿½w (+ podstawowe informacje) o danym tytule i roku produkcji
+     * Pozycje posortowane wg trafnoï¿½ci (popularnoï¿½ï¿½)
+     * @param title Tytuï¿½ filmu
      * @param year Rok produkcji
-     * @return Lista filmów wraz z podstawowymi informacjami
+     * @return Lista filmï¿½w wraz z podstawowymi informacjami
      */
     public ArrayList<Film> getFilmList(String title, int year) {
         return ca.getFilmList(title, year);
@@ -40,8 +40,8 @@ public class FilmwebApi {
 
     /**
      * Lista seriali (+ podstawowe informacje) o danym tytule
-     * Pozycje posortowane wg trafnoœci (popularnoœæ)
-     * @param title Tytu³ serialu
+     * Pozycje posortowane wg trafnoï¿½ci (popularnoï¿½ï¿½)
+     * @param title Tytuï¿½ serialu
      * @return Lista seriali wraz z podstawowymi informacjami
      */
     public ArrayList<Series> getSeriesList(String title) {
@@ -50,8 +50,8 @@ public class FilmwebApi {
 
     /**
      * Lista seriali (+ podstawowe informacje) o danym tytule i roku produkcji
-     * Pozycje posortowane wg trafnoœci (popularnoœæ)
-     * @param title Tytu³ serialu
+     * Pozycje posortowane wg trafnoï¿½ci (popularnoï¿½ï¿½)
+     * @param title Tytuï¿½ serialu
      * @param year Rok produkcji
      * @return Lista seriali wraz z podstawowymi informacjami
      */
@@ -74,8 +74,16 @@ public class FilmwebApi {
     public ArrayList<Film> getObservedFilms() {
     	return ca.getObservedFilms();
     }
+
+    public ArrayList<Series> getObservedSeries() {
+        return ca.getObservedSeries();
+    }
     
     public List<Remind> getFilmsNearestBroadcasts(int filmId, Type type) {
     	return ca.getFilmsNearestBroadcasts(filmId, type);
+    }
+
+    public List<Channel> getObservedChannels() {
+        return ca.getObservedChannels();
     }
 }

@@ -24,6 +24,7 @@ import org.jsoup.nodes.Element;
 import android.annotation.SuppressLint;
 
 import com.hci.reminder.CacheList;
+import com.hci.reminder.ObservedChannelList;
 import com.hci.reminder.ObservedFilmList;
 import com.hci.reminder.config.Config;
 import com.hci.reminder.config.Connection;
@@ -35,7 +36,7 @@ import com.hci.reminder.model.Series;
 
 public class ContentAnalyzer {
 
-    // Adres strony, której zawartoœæ bêdzie analizowana
+    // Adres strony, ktï¿½rej zawartoï¿½ï¿½ bï¿½dzie analizowana
     private URL url;
 
     // Typ zapytania: film, serial
@@ -54,8 +55,8 @@ public class ContentAnalyzer {
     }
 
     /**
-     * Ustawianie adresu strony na podstawie przekazanych parametrów
-     * @param params Parametry - wymagane: title (tytu³), opcja: year (rok produkcji)
+     * Ustawianie adresu strony na podstawie przekazanych parametrï¿½w
+     * @param params Parametry - wymagane: title (tytuï¿½), opcja: year (rok produkcji)
      * @return Powodzenie / niepowodzenie
      */
     private boolean setUrlStr(HashMap<String, ?> params) {
@@ -93,11 +94,11 @@ public class ContentAnalyzer {
     }
 
     /**
-     * Lista filmów, których tytu³ zawiera dany ci¹g znaków
+     * Lista filmï¿½w, ktï¿½rych tytuï¿½ zawiera dany ciï¿½g znakï¿½w
      * @param params
-     *      1. (String) Ci¹g znaków zawarty w tytule,
+     *      1. (String) Ciï¿½g znakï¿½w zawarty w tytule,
      *      2. (int) Rok produkcji - opcjonalnie
-     * @return Lista filmów
+     * @return Lista filmï¿½w
      */
     public ArrayList<Film> getFilmList(Object... params) {
         this.queryType = "film";
@@ -108,11 +109,11 @@ public class ContentAnalyzer {
     }
     
     /**
-     * Lista serialów, których tytu³ zawiera dany ci¹g znaków
+     * Lista serialï¿½w, ktï¿½rych tytuï¿½ zawiera dany ciï¿½g znakï¿½w
      * @param params
-     *      1. (String) Ci¹g znaków zawarty w tytule,
+     *      1. (String) Ciï¿½g znakï¿½w zawarty w tytule,
      *      2. (int) Rok produkcji - opcjonalnie
-     * @return Lista serialów
+     * @return Lista serialï¿½w
      */
     public ArrayList<Series> getSeriesList(Object... params) {
         this.queryType = "serial";
@@ -142,23 +143,23 @@ public class ContentAnalyzer {
             }
             br.close();
         } catch (MalformedURLException e) {
-            desc += "Nieprawid³owy adres URL.";
+            desc += "Nieprawidï¿½owy adres URL.";
         }
         catch (IOException e) {
-            desc += "B³¹d odczytu danych filmu.";
+            desc += "Bï¿½ï¿½d odczytu danych filmu.";
         }
         return html.toString();
     }
 
     /**
-     * Lista filmów dla ustawionych wczeœniej parametrów
+     * Lista filmï¿½w dla ustawionych wczeï¿½niej parametrï¿½w
      * @see public ArrayList<Film> getFilmList(String title, int year)
      * @see public ArrayList<Film> getFilmList(String title)
-     * @return Lista filmów
+     * @return Lista filmï¿½w
      */
     private ArrayList<Film> getFilmList() {
 
-        String html = getHtmlCode(this.url, "Lista filmów");
+        String html = getHtmlCode(this.url, "Lista filmï¿½w");
 
         List<String> allMatches = new ArrayList<String>();
 
@@ -197,7 +198,7 @@ public class ContentAnalyzer {
     /**
      * Pobranie ze strony filmu podstawowych informacji
      * @param film
-     * @return Film z uzupe³nionym ID
+     * @return Film z uzupeï¿½nionym ID
      */
     private Film getFilmData(Film film) {
 
@@ -215,7 +216,7 @@ public class ContentAnalyzer {
     }
     
     /**
-     * Lista seriali dla ustawionych wczeœniej parametrów
+     * Lista seriali dla ustawionych wczeï¿½niej parametrï¿½w
      * @see public ArrayList<Series> getSeriesList(String title, int year)
      * @see public ArrayList<Series> getSeriesList(String title)
      * @return Lista seriali
@@ -262,7 +263,7 @@ public class ContentAnalyzer {
     /**
      * Pobranie ze strony serialu podstawowych informacji
      * @param series
-     * @return series z uzupe³nionym ID
+     * @return series z uzupeï¿½nionym ID
      */
     private Series getSeriesData(Series series) {
 
@@ -302,12 +303,31 @@ public class ContentAnalyzer {
     	FilmwebApiHelper api = new FilmwebApiHelper(conn);
     	return api.getFilmsNearestBroadcasts(filmId, type);
     }
-    
-    
+
     public ArrayList<Film> getObservedFilms() {
-    	return ObservedFilmList.getObserved();
+        ArrayList<Film> observed = new ArrayList<Film>();
+        for(Film film : ObservedFilmList.getObserved()) {
+            if(film.getFilmType() == Type.FILM.getCode()) {
+                observed.add(film);
+            }
+        }
+        return observed;
     }
- 
+
+    public ArrayList<Series> getObservedSeries() {
+        ArrayList<Series> observed = new ArrayList<Series>();
+        for(Film film : ObservedFilmList.getObserved()) {
+            if(film.getFilmType() == Type.SERIES.getCode()) {
+                observed.add((Series)film);
+            }
+        }
+        return observed;
+    }
+
+    public ArrayList<Channel> getObservedChannels() {
+        return ObservedChannelList.getObserved();
+    }
+
     @SuppressLint("SimpleDateFormat")
 	public Series setNextEpisodeData(Series series) {
     	String html = getHtmlCode(series.getFilmUrl(), "Serial");
